@@ -8,9 +8,9 @@
 static Field tripMenus[] =
 {
 #ifndef SW102
-	FIELD_EDITABLE_ENUM("A auto reset", &ui_vars.ui8_trip_a_auto_reset, "disable", "enable"),
+	FIELD_EDITABLE_ENUM("A auto reset", &ui_vars.ui8_trip_a_auto_reset, "disable", "hours", "recharge"),
 	FIELD_EDITABLE_UINT("A auto reset hours", &ui_vars.ui16_trip_a_auto_reset_hours, "hrs", 0, 999, .inc_step = 1),
-	FIELD_EDITABLE_ENUM("B auto reset", &ui_vars.ui8_trip_b_auto_reset, "disable", "enable"),
+	FIELD_EDITABLE_ENUM("B auto reset", &ui_vars.ui8_trip_b_auto_reset, "disable", "hours", "recharge"),
 	FIELD_EDITABLE_UINT("B auto reset hours", &ui_vars.ui16_trip_b_auto_reset_hours, "hrs", 0, 999, .inc_step = 1),
 #endif
 	FIELD_EDITABLE_ENUM(_S("Reset trip A", "Rst trip A"), &ui8_g_configuration_trip_a_reset, "no", "yes"),
