@@ -64,6 +64,12 @@ typedef struct battery_energy_h_km_struct {
   uint32_t ui32_value_x10;
 } battery_energy_h_km_t;
 
+typedef enum {
+	TRIP_AUTO_RESET_OFF = 0,
+	TRIP_AUTO_RESET_HOURS = 1,
+	TRIP_AUTO_RESET_RECHARGE = 2,
+} trip_auto_reset_state_t;
+
 typedef struct rt_vars_struct {
 	uint16_t ui16_adc_battery_voltage;
 	uint8_t ui8_battery_current_x5;

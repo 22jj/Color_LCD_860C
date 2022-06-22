@@ -1507,11 +1507,20 @@ void BatterySOCReset(void) {
 			ui_vars.ui32_wh_x10_offset = (ui_vars.ui32_wh_x10_100_percent
 				* ui8_battery_soc_used[ui8_battery_soc_index]) / 100;
 #ifndef SW102
-			ui_vars.ui32_wh_x10_trip_a_offset = ui_vars.ui32_wh_x10_trip_a;
-			ui32_wh_x10_reset_trip_a = 0;
-			
-			ui_vars.ui32_wh_x10_trip_b_offset = ui_vars.ui32_wh_x10_trip_b;
-			ui32_wh_x10_reset_trip_b = 0;
+			if(ui_vars.ui8_trip_a_auto_reset == TRIP_AUTO_RESET_RECHARGE) {
+				ui8_g_configuration_trip_a_reset = 1;
+			} else {
+				ui_vars.ui32_wh_x10_trip_a_offset = ui_vars.ui32_wh_x10_trip_a;
+				ui32_wh_x10_reset_trip_a = 0;
+			}
+
+			if(ui_vars.ui8_trip_a_auto_reset == TRIP_AUTO_RESET_RECHARGE) {
+				ui8_g_configuration_trip_b_reset = 1;
+			} else {
+				ui_vars.ui32_wh_x10_trip_b_offset = ui_vars.ui32_wh_x10_trip_b;
+				ui32_wh_x10_reset_trip_b = 0;
+			}
+
 #endif
 		}
 	}
