@@ -38,59 +38,61 @@ static void mainScreenOnEnter() {
 }
 
 void mainScreenOnDirtyClean() {
-  UG_FontSelect(&FONT_10X16);
-  UG_SetBackcolor(C_BLACK);
-  UG_SetForecolor(MAIN_SCREEN_FIELD_LABELS_COLOR);
+	UG_FontSelect(&FONT_10X16);
+	UG_SetBackcolor(C_BLACK);
+	UG_SetForecolor(MAIN_SCREEN_FIELD_LABELS_COLOR);
 
-  // main screen mask
-  // horizontal lines
-  UG_DrawLine(0, 33, 319, 33, MAIN_SCREEN_FIELD_LABELS_COLOR);
-  UG_DrawLine(0, 155, 319, 155, MAIN_SCREEN_FIELD_LABELS_COLOR);
-  UG_DrawLine(0, 235, 319, 235, MAIN_SCREEN_FIELD_LABELS_COLOR);
-  UG_DrawLine(0, 315, 319, 315, MAIN_SCREEN_FIELD_LABELS_COLOR);
+	// main screen mask
+	// horizontal lines
+	UG_DrawLine(0, 33, 319, 33, MAIN_SCREEN_FIELD_LABELS_COLOR);
+	UG_DrawLine(0, 155, 319, 155, MAIN_SCREEN_FIELD_LABELS_COLOR);
+	UG_DrawLine(0, 235, 319, 235, MAIN_SCREEN_FIELD_LABELS_COLOR);
+	UG_DrawLine(0, 315, 319, 315, MAIN_SCREEN_FIELD_LABELS_COLOR);
+	UG_DrawLine(0, 395, 319, 395, MAIN_SCREEN_FIELD_LABELS_COLOR);
 
-  // vertical line
-  UG_DrawLine(159, 156, 159, 314, MAIN_SCREEN_FIELD_LABELS_COLOR);
 
-  // wheel speed
-  if(ui_vars.ui8_units_type == 0)
-  {
-    UG_PutString(265, 46 , "KM/H");
-  }
-  else
-  {
-    UG_PutString(265, 46 , "MPH");
-  }
+	// vertical line
+	UG_DrawLine(159, 156, 159, 474, MAIN_SCREEN_FIELD_LABELS_COLOR);
 
-  // if street mode is enable, show ASSIST with regular color otherwise use orange color
-  UG_COLOR assist_color;
-  if ((assistLevelField.rw->visibility == FieldTransitionVisible) ||
-      (assistLevelField.rw->visibility == FieldVisible)) {
-    if (ui_vars.ui8_street_mode_enabled) {
-      assist_color = MAIN_SCREEN_FIELD_LABELS_COLOR;
-    } else {
-      assist_color = C_ORANGE_RED;
-    }
-  }
+	// wheel speed
+	if(ui_vars.ui8_units_type == 0)
+	{
+		UG_PutString(265, 46 , "KM/H");
+	}
+	else
+	{
+		UG_PutString(265, 46 , "MPH");
+	}
 
-  // if street mode feature is disabled, show with regular color
-  if (ui_vars.ui8_street_mode_function_enabled == 0)
-    assist_color = MAIN_SCREEN_FIELD_LABELS_COLOR;
+	// if street mode is enable, show ASSIST with regular color otherwise use orange color
+	UG_COLOR assist_color;
+	if ((assistLevelField.rw->visibility == FieldTransitionVisible) ||
+			(assistLevelField.rw->visibility == FieldVisible)) {
+		if (ui_vars.ui8_street_mode_enabled) {
+			assist_color = MAIN_SCREEN_FIELD_LABELS_COLOR;
+		} else {
+			assist_color = C_ORANGE_RED;
+		}
+	}
 
-  // if fieldAlternate is enable, do not show ASSIST
-  if ((fieldAlternate.rw->visibility == FieldTransitionVisible) ||
-      (fieldAlternate.rw->visibility == FieldVisible)) {
-    UG_PutString(14, 46, "      ");
-  } else {
-    UG_SetForecolor(assist_color);
-    UG_PutString(14, 46, "ASSIST");
-  }
+	// if street mode feature is disabled, show with regular color
+	if (ui_vars.ui8_street_mode_function_enabled == 0)
+		assist_color = MAIN_SCREEN_FIELD_LABELS_COLOR;
+
+	// if fieldAlternate is enable, do not show ASSIST
+	if ((fieldAlternate.rw->visibility == FieldTransitionVisible) ||
+			(fieldAlternate.rw->visibility == FieldVisible)) {
+		UG_PutString(14, 46, "      ");
+	} else {
+		UG_SetForecolor(assist_color);
+		UG_PutString(14, 46, "ASSIST");
+	}
 }
 
 void mainScreenOnPostUpdate(void) {
-  // because printing numbers of wheel speed will make dirty the dot, always print it
-  // wheel speed print dot
-  UG_FillFrame(257, 129, 263, 135, C_WHITE);
+	// because printing numbers of wheel speed will make dirty the dot, always print it
+	// wheel speed print dot
+	UG_FillFrame(257, 129, 263, 135, C_WHITE);
 }
 
 /**
@@ -99,387 +101,430 @@ void mainScreenOnPostUpdate(void) {
  * at the top and the status bar at the bottom can be shared across all screens
  */
 #define STATUS_BAR \
-{ \
-    .x = 4, .y = SCREEN_HEIGHT - 18, \
-    .width = 0, .height = -1, \
-    .field = &warnField, \
-    .font = &SMALL_TEXT_FONT, \
-}
+		{ \
+	.x = 4, .y = SCREEN_HEIGHT - 18, \
+	.width = 0, .height = -1, \
+	.field = &warnField, \
+	.font = &SMALL_TEXT_FONT, \
+		}
 
 #define BATTERY_BAR \
-  { \
-      .x = 0, .y = 0, \
-      .width = -1, .height = -1, \
-      .field = &batteryField, \
-  }, \
-  { \
-      .x = 8 + ((7 + 1 + 1) * 10) + (1 * 2) + 10, .y = 2, \
-      .width = -5, .height = -1, \
-      .font = &REGULAR_TEXT_FONT, \
-      .align_x = AlignLeft, \
-      .unit_align_x = AlignLeft, \
-      .field = &socField \
-  }, \
-	{ \
-		.x = 234, .y = 2, \
-		.width = -5, .height = -1, \
-		.font = &REGULAR_TEXT_FONT, \
-		.unit_align_x = AlignRight, \
-		.field = &timeField \
-	}
+		{ \
+	.x = 0, .y = 0, \
+	.width = -1, .height = -1, \
+	.field = &batteryField, \
+		}, \
+		{ \
+			.x = 8 + ((7 + 1 + 1) * 10) + (1 * 2) + 10, .y = 2, \
+			.width = -5, .height = -1, \
+			.font = &REGULAR_TEXT_FONT, \
+			.align_x = AlignLeft, \
+			.unit_align_x = AlignLeft, \
+			.field = &socField \
+		}, \
+		{ \
+			.x = 234, .y = 2, \
+			.width = -5, .height = -1, \
+			.font = &REGULAR_TEXT_FONT, \
+			.unit_align_x = AlignRight, \
+			.field = &timeField \
+		}
 
 //
 // Screenscommon/src/state.c
 //
 Screen mainScreen1 = {
-  .onPress = mainScreenOnPress,
-  .onEnter = mainScreenOnEnter,
-  .onDirtyClean = mainScreenOnDirtyClean,
-  .onPostUpdate = mainScreenOnPostUpdate,
+		.onPress = mainScreenOnPress,
+		.onEnter = mainScreenOnEnter,
+		.onDirtyClean = mainScreenOnDirtyClean,
+		.onPostUpdate = mainScreenOnPostUpdate,
 
-  .fields = {
-    BATTERY_BAR,
-    {
-      .x = 0, .y = 77,
-      .width = 91, .height = -1,
-      .field = &assistLevelField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 2, .y = 76,
-      .width = 100, .height = 70  ,
-      .field = &fieldAlternate,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 132, .y = 56,
-      .width = 123, // 2 digits
-      .height = 99,
-      .field = &wheelSpeedIntegerField,
-      .font = &HUGE_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignRight,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 266, .y = 78,
-      .width = 45, // 1 digit
-      .height = 72,
-      .field = &wheelSpeedDecimalField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignCenter,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom1,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom2,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom3,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom4,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 0, .y = 322,
-      .width = SCREEN_WIDTH, .height = 136,
-      .field = &graph1,
-    },
-    STATUS_BAR,
-    {
-      .field = NULL
-    }
-  }
+		.fields = {
+				BATTERY_BAR,
+				{
+						.x = 0, .y = 77,
+						.width = 91, .height = -1,
+						.field = &assistLevelField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 2, .y = 76,
+						.width = 100, .height = 70  ,
+						.field = &fieldAlternate,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 132, .y = 56,
+						.width = 123, // 2 digits
+						.height = 99,
+						.field = &wheelSpeedIntegerField,
+						.font = &HUGE_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignRight,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 266, .y = 78,
+						.width = 45, // 1 digit
+						.height = 72,
+						.field = &wheelSpeedDecimalField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignCenter,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom1,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom2,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom3,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom4,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 319,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom5,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 319,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom6,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 398,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom7,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 398,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom8,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				STATUS_BAR,
+				{
+						.field = NULL
+				}
+		}
 };
 
 Screen mainScreen2 = {
-  .onPress = mainScreenOnPress,
-  .onEnter = mainScreenOnEnter,
-  .onDirtyClean = mainScreenOnDirtyClean,
-  .onPostUpdate = mainScreenOnPostUpdate,
+		.onPress = mainScreenOnPress,
+		.onEnter = mainScreenOnEnter,
+		.onDirtyClean = mainScreenOnDirtyClean,
+		.onPostUpdate = mainScreenOnPostUpdate,
 
-  .fields = {
-    BATTERY_BAR,
-    {
-      .x = 0, .y = 77,
-      .width = 91, .height = -1,
-      .field = &assistLevelField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 2, .y = 76,
-      .width = 100, .height = 70  ,
-      .field = &fieldAlternate,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 132, .y = 56,
-      .width = 123, // 2 digits
-      .height = 99,
-      .field = &wheelSpeedIntegerField,
-      .font = &HUGE_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignRight,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 266, .y = 78,
-      .width = 45, // 1 digit
-      .height = 72,
-      .field = &wheelSpeedDecimalField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignCenter,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom5,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom6,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom7,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom8,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 0, .y = 322,
-      .width = SCREEN_WIDTH, .height = 136,
-      .field = &graph2,
-    },
-    STATUS_BAR,
-    {
-      .field = NULL
-    }
-  }
+		.fields = {
+				BATTERY_BAR,
+				{
+						.x = 0, .y = 77,
+						.width = 91, .height = -1,
+						.field = &assistLevelField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 2, .y = 76,
+						.width = 100, .height = 70  ,
+						.field = &fieldAlternate,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 132, .y = 56,
+						.width = 123, // 2 digits
+						.height = 99,
+						.field = &wheelSpeedIntegerField,
+						.font = &HUGE_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignRight,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 266, .y = 78,
+						.width = 45, // 1 digit
+						.height = 72,
+						.field = &wheelSpeedDecimalField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignCenter,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom5,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom6,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom7,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom8,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 0, .y = 322,
+						.width = SCREEN_WIDTH, .height = 136,
+						.field = &graph2,
+				},
+				STATUS_BAR,
+				{
+						.field = NULL
+				}
+		}
 };
 
 Screen mainScreen3 = {
-  .onPress = mainScreenOnPress,
-  .onEnter = mainScreenOnEnter,
-  .onDirtyClean = mainScreenOnDirtyClean,
-  .onPostUpdate = mainScreenOnPostUpdate,
+		.onPress = mainScreenOnPress,
+		.onEnter = mainScreenOnEnter,
+		.onDirtyClean = mainScreenOnDirtyClean,
+		.onPostUpdate = mainScreenOnPostUpdate,
 
-  .fields = {
-    BATTERY_BAR,
-    {
-      .x = 0, .y = 77,
-      .width = 91, .height = -1,
-      .field = &assistLevelField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 2, .y = 76,
-      .width = 100, .height = 70  ,
-      .field = &fieldAlternate,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 132, .y = 56,
-      .width = 123, // 2 digits
-      .height = 99,
-      .field = &wheelSpeedIntegerField,
-      .font = &HUGE_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignRight,
-      .unit_align_x = AlignRight,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 266, .y = 78,
-      .width = 45, // 1 digit
-      .height = 72,
-      .field = &wheelSpeedDecimalField,
-      .font = &BIG_NUMBERS_TEXT_FONT,
-      .label_align_x = AlignHidden,
-      .align_x = AlignCenter,
-      .unit_align_x = AlignCenter,
-      .unit_align_y = AlignTop,
-      .show_units = Hide,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom9,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 161,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom10,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom11,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = XbyEighths(4) + 1, .y = 240,
-      .width = XbyEighths(4) - 4,
-      .height = 72,
-      .align_x = AlignCenter,
-      .inset_y = 12,
-      .inset_x = 0,
-      .field = &custom12,
-      .font = &MEDIUM_NUMBERS_TEXT_FONT,
-      .label_align_y = AlignTop,
-      .border = BorderNone,
-    },
-    {
-      .x = 0, .y = 322,
-      .width = SCREEN_WIDTH, .height = 136,
-      .field = &graph3,
-    },
-    STATUS_BAR,
-    {
-      .field = NULL
-    }
-  }
+		.fields = {
+				BATTERY_BAR,
+				{
+						.x = 0, .y = 77,
+						.width = 91, .height = -1,
+						.field = &assistLevelField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 2, .y = 76,
+						.width = 100, .height = 70  ,
+						.field = &fieldAlternate,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 132, .y = 56,
+						.width = 123, // 2 digits
+						.height = 99,
+						.field = &wheelSpeedIntegerField,
+						.font = &HUGE_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignRight,
+						.unit_align_x = AlignRight,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 266, .y = 78,
+						.width = 45, // 1 digit
+						.height = 72,
+						.field = &wheelSpeedDecimalField,
+						.font = &BIG_NUMBERS_TEXT_FONT,
+						.label_align_x = AlignHidden,
+						.align_x = AlignCenter,
+						.unit_align_x = AlignCenter,
+						.unit_align_y = AlignTop,
+						.show_units = Hide,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom9,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 161,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom10,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom11,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = XbyEighths(4) + 1, .y = 240,
+						.width = XbyEighths(4) - 4,
+						.height = 72,
+						.align_x = AlignCenter,
+						.inset_y = 12,
+						.inset_x = 0,
+						.field = &custom12,
+						.font = &MEDIUM_NUMBERS_TEXT_FONT,
+						.label_align_y = AlignTop,
+						.border = BorderNone,
+				},
+				{
+						.x = 0, .y = 322,
+						.width = SCREEN_WIDTH, .height = 136,
+						.field = &graph3,
+				},
+				STATUS_BAR,
+				{
+						.field = NULL
+				}
+		}
 };
 
 
@@ -490,53 +535,53 @@ Screen *screens[] = { &mainScreen1, &mainScreen2, &mainScreen3, NULL };
 void battery_display() {
 	static uint8_t old_soc = 0xff;
 
-  if (ui8_g_battery_soc != old_soc) {
-    old_soc = ui8_g_battery_soc;
-    batteryField.rw->dirty = true;
-  }
+	if (ui8_g_battery_soc != old_soc) {
+		old_soc = ui8_g_battery_soc;
+		batteryField.rw->dirty = true;
+	}
 }
 
 void clock_time(void) {
-  rtc_time_t *p_rtc_time;
+	rtc_time_t *p_rtc_time;
 
-  // get current time
-  p_rtc_time = rtc_get_time();
-  ui8_g_configuration_clock_hours = p_rtc_time->ui8_hours;
-  ui8_g_configuration_clock_minutes = p_rtc_time->ui8_minutes;
+	// get current time
+	p_rtc_time = rtc_get_time();
+	ui8_g_configuration_clock_hours = p_rtc_time->ui8_hours;
+	ui8_g_configuration_clock_minutes = p_rtc_time->ui8_minutes;
 
-  // force to be [0 - 12] depending on SI or Ipmerial units
-  if (ui_vars.ui8_units_type) {
-    if(ui8_g_configuration_clock_hours > 12) {
-      ui8_g_configuration_clock_hours -= 12;
-    }
-  }
+	// force to be [0 - 12] depending on SI or Ipmerial units
+	if (ui_vars.ui8_units_type) {
+		if(ui8_g_configuration_clock_hours > 12) {
+			ui8_g_configuration_clock_hours -= 12;
+		}
+	}
 }
 void onSetConfigurationClockHours(uint32_t v) {
-  static rtc_time_t rtc_time;
+	static rtc_time_t rtc_time;
 
-  // save the new clock time
-  rtc_time.ui8_hours = v;
-  rtc_time.ui8_minutes = ui8_g_configuration_clock_minutes;
-  rtc_set_time(&rtc_time);
+	// save the new clock time
+	rtc_time.ui8_hours = v;
+	rtc_time.ui8_minutes = ui8_g_configuration_clock_minutes;
+	rtc_set_time(&rtc_time);
 }
 
 void onSetConfigurationClockMinutes(uint32_t v) {
-  static rtc_time_t rtc_time;
+	static rtc_time_t rtc_time;
 
-  // save the new clock time
-  rtc_time.ui8_hours = ui8_g_configuration_clock_hours;
-  rtc_time.ui8_minutes = v;
-  rtc_set_time(&rtc_time);
+	// save the new clock time
+	rtc_time.ui8_hours = ui8_g_configuration_clock_hours;
+	rtc_time.ui8_minutes = v;
+	rtc_set_time(&rtc_time);
 }
 
 void onSetConfigurationDisplayLcdBacklightOnBrightness(uint32_t v) {
 
-  ui_vars.ui8_lcd_backlight_on_brightness = v;
-  set_lcd_backlight();
+	ui_vars.ui8_lcd_backlight_on_brightness = v;
+	set_lcd_backlight();
 }
 
 void onSetConfigurationDisplayLcdBacklightOffBrightness(uint32_t v) {
 
-  ui_vars.ui8_lcd_backlight_off_brightness = v;
-  set_lcd_backlight();
+	ui_vars.ui8_lcd_backlight_off_brightness = v;
+	set_lcd_backlight();
 }

@@ -27,6 +27,13 @@ ifeq ($(DISPLAY_VERSION), 850C_BOOTLOADER)
   DISPLAY_VERSION_DEFINED = yes
 endif
 
+ifeq ($(DISPLAY_VERSION), 850C_2021_BOOTLOADER)
+  CFLAGS += -DDISPLAY_850C
+  CFLAGS += -DDISPLAY_850C_2021
+  BOOTLOADER = yes
+  DISPLAY_VERSION_DEFINED = yes
+endif
+
 ifeq ($(DISPLAY_VERSION), 860C_BOOTLOADER)
   CFLAGS += -DDISPLAY_860C
   BOOTLOADER = yes
@@ -95,7 +102,13 @@ include ../../common/Makefile.common
 
 COMMONDIR = ../../common/src
 OBJDIR = _build
-CUSTOM_SOURCES=$(shell find spl ugui_driver *.c -type f -iname '*.c') 
+CUSTOM_SOURCES=$(shell find spl *.c -type f -iname '*.c')
+ifeq ($(DISPLAY_VERSION), 850C_2021_BOOTLOADER) 
+  CUSTOM_SOURCES+= $(shell find ugui_driver -type f -iname '*2021.c')
+else
+  CUSTOM_SOURCES+= $(shell find ugui_driver -type f -iname '*2020.c')
+endif
+$(info    CUSTOM_SOURCES is $(CUSTOM_SOURCES))
 COMMON_SOURCES = fault.c buttons.c utils.c ugui.c fonts.c state.c screen.c mainscreen.c configscreen.c eeprom.c
 SOURCES = $(CUSTOM_SOURCES) $(foreach x, $(COMMON_SOURCES), $(COMMONDIR)/$(x))
 OBJECTS = $(foreach x, $(basename $(SOURCES)), $(OBJDIR)/$(x).o)

@@ -652,7 +652,7 @@ static void rt_calc_trips(void) {
 #ifndef SW102
   uint32_t current_time = RTC_GetCounter();
 
-  if(ui_vars.ui8_trip_a_auto_reset == 1 && ui_vars.ui16_trip_a_auto_reset_hours &&
+  if(ui_vars.ui8_trip_a_auto_reset == TRIP_AUTO_RESET_HOURS && ui_vars.ui16_trip_a_auto_reset_hours &&
     (current_time - rt_vars.ui32_trip_a_last_update_time >= ui_vars.ui16_trip_a_auto_reset_hours * 3600)) {
 		rt_vars.ui32_trip_a_last_update_time = current_time;
 		rt_vars.ui32_trip_a_distance_x1000 = 0;
@@ -664,7 +664,7 @@ static void rt_calc_trips(void) {
 		ui32_wh_x10_reset_trip_a = ui32_wh_x10_since_power_on;
   }
 
-  if(ui_vars.ui8_trip_b_auto_reset == 1 && ui_vars.ui16_trip_b_auto_reset_hours &&
+  if(ui_vars.ui8_trip_b_auto_reset == TRIP_AUTO_RESET_HOURS && ui_vars.ui16_trip_b_auto_reset_hours &&
     (current_time - rt_vars.ui32_trip_b_last_update_time >= ui_vars.ui16_trip_b_auto_reset_hours * 3600)) {
 		rt_vars.ui32_trip_b_last_update_time = current_time;
 		rt_vars.ui32_trip_b_distance_x1000 = 0;
@@ -734,11 +734,11 @@ uint8_t rt_first_time_management(void) {
 
 #ifndef SW102		
 		// reset trip A at reset Wh
-		if((ui_vars.ui8_trip_a_auto_reset) && (!ui_vars.ui16_trip_a_auto_reset_hours)) {
+		if(ui_vars.ui8_trip_a_auto_reset == TRIP_AUTO_RESET_RECHARGE ) {
 			ui8_g_configuration_trip_a_reset = 1;
 		}
 		// reset trip B at reset Wh
-		if((ui_vars.ui8_trip_b_auto_reset) && (!ui_vars.ui16_trip_b_auto_reset_hours)) {
+		if(ui_vars.ui8_trip_b_auto_reset == TRIP_AUTO_RESET_RECHARGE ) {
 			ui8_g_configuration_trip_b_reset = 1;
 		}
 #endif
@@ -1359,8 +1359,6 @@ static void motor_init(void) {
     }
   }
 }
-<<<<<<< HEAD
-=======
 
 // filter
 uint16_t filter(uint16_t ui16_new_value, uint16_t ui16_old_value, uint8_t ui8_alpha) {
@@ -1381,4 +1379,4 @@ uint16_t filter(uint16_t ui16_new_value, uint16_t ui16_old_value, uint8_t ui8_al
         return 0;
     }
 }
->>>>>>> refs/remotes/origin/master
+
