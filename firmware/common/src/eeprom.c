@@ -867,8 +867,8 @@ void eeprom_write_variables(void) {
 	//m_eeprom_data.ui8_units_type = ui_vars->ui8_units_type;
 	
 #ifndef SW102
-	m_eeprom_data.ui32_wh_x10_trip_a_offset = ui_vars->ui32_wh_x10_trip_a;
-	m_eeprom_data.ui32_wh_x10_trip_b_offset = ui_vars->ui32_wh_x10_trip_b;
+	m_eeprom_data.ui32_wh_x10_trip_a_offset = ui_vars->ui32_wh_x10_trip_a_offset;
+	m_eeprom_data.ui32_wh_x10_trip_b_offset = ui_vars->ui32_wh_x10_trip_b_offset;
 #endif
 
 	m_eeprom_data.ui32_wh_x10_offset = ui_vars->ui32_wh_x10_offset;
